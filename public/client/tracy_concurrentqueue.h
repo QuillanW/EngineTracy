@@ -345,7 +345,8 @@ struct ProducerToken
 
 	~ProducerToken()
 	{
-		if (producer != nullptr) {
+		if (producer != nullptr && producer != (void*)0xfeeefeeefeeefeee)
+		{
 			producer->token = nullptr;
 			producer->inactive.store(true, std::memory_order_release);
 		}

@@ -3111,13 +3111,6 @@ bool Profiler::CommitData()
     return ret;
 }
 
-extern "C" int exc(_In_ EXCEPTION_POINTERS *lpEP);
-int exc(_In_ EXCEPTION_POINTERS *lpEP)
-{
-	printf("Exception code: %u  Flags: %u\n", lpEP->ExceptionRecord->ExceptionCode, lpEP->ExceptionRecord->ExceptionFlags);
-	return EXCEPTION_EXECUTE_HANDLER;
-}
-
 char* Profiler::SafeCopyProlog( const char* data, size_t size )
 {
     bool success = true;
@@ -3139,7 +3132,7 @@ char* Profiler::SafeCopyProlog( const char* data, size_t size )
         success = false;
     }
 #else
-	__try1(exc)
+    __try1(UnhandledExceptionFilter)
     {
     	memcpy( buf, data, size );
     }
